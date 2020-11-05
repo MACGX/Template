@@ -15,6 +15,7 @@ class  ArregloDinamico
 public:
      ArregloDinamico();
     ~ ArregloDinamico();
+
     void insertar_final(const T& v);
     void insertar_inicio(const T& v);
     void insertar(const T& v, size_t p);
@@ -23,12 +24,22 @@ public:
     void eliminar_inicio();
     void eliminar(size_t p);
 
+    T* buscar (const T& v);
+    ArregloDinamico<T*> buscar_todos(const T& v);
+
     void mostrar();
 
     size_t size();
     T operator[](size_t p)
     {
         return  arreglodinamico[p];
+    }
+
+    friend ArregloDinamico<T>& operator<<(ArregloDinamico<T> &a, const T& v)
+    {
+        a.insertar_final(v);
+        
+        return a;
     }
 
 private:
@@ -120,6 +131,33 @@ void ArregloDinamico<T>::eliminar(size_t p){
     arreglodinamico[i] = arreglodinamico [i+1];
     }
     cont--;    
+}
+
+template <class T>
+T* ArregloDinamico<T>::buscar(const T& v){
+    for (size_t i = 0; i < cont; i++)
+    {
+        if(v == arreglodinamico[i]){
+            return &arreglodinamico[i];
+        }
+    }
+    return nullptr;
+}
+
+template <class T>
+ArregloDinamico<T*> ArregloDinamico<T>::buscar_todos(const T& v){
+
+    ArregloDinamico<T*> ptrs;
+
+    for (size_t i = 0; i < cont; i++)
+    {
+        if(v == arreglodinamico[i]){
+            ptrs.insertar_final (&arreglodinamico[i]);
+        }
+    }
+
+    return ptrs;
+
 }
 
 template <class T>
